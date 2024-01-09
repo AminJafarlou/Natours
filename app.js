@@ -16,6 +16,7 @@ app.use((req, _res, next) => {
   next();
 });
 
+// Routes Handler
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
@@ -104,18 +105,66 @@ const deleteTour = (req, res) => {
   });
 };
 
-// app.get("/api/v1/tours", getAllTours);
-// app.get("/api/v1/tours/:id", getTour);
-// app.post("/api/v1/tours", createNewTour);
-// app.patch("/api/v1/tours/:id", updateTour);
-// app.delete("/api/v1/tours/:id", deleteTour);
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    requestedAt: req.requestTime,
+    data: {
+      message: "Not implemented",
+    },
+  });
+};
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    requestedAt: req.requestTime,
+    data: {
+      message: "Not implemented",
+    },
+  });
+};
 
-app.route("/api/v1/tours").get(getAllTours).post(createNewTour);
-app
-  .route("/api/v1/tours/:id")
-  .get(getTour)
-  .patch(updateTour)
-  .delete(deleteTour);
+const createNewUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    requestedAt: req.requestTime,
+    data: {
+      message: "Not implemented",
+    },
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    requestedAt: req.requestTime,
+    data: {
+      message: "Not implemented",
+    },
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    requestedAt: req.requestTime,
+    data: {
+      message: "Not implemented",
+    },
+  });
+};
+
+// Routes
+const tourRouter = express.Router();
+tourRouter.route("/").get(getAllTours).post(createNewTour);
+tourRouter.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
+
+const userRouter = express.Router();
+userRouter.route("/").get(getAllUsers).post(createNewUser);
+userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+
+app.use("/api/v1/tours", tourRouter);
+app.use("/api/v1/users", userRouter);
 
 const port = 3000;
 app.listen(port, () => {
