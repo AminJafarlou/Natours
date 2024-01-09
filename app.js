@@ -1,4 +1,5 @@
 const fs = require("fs");
+const morgan = require("morgan");
 const express = require("express");
 
 const tours = JSON.parse(
@@ -6,9 +7,10 @@ const tours = JSON.parse(
 );
 
 const app = express();
-app.use(express.json());
 
-// Add time middleware
+// MIDDLEWARES
+app.use(express.json());
+app.use(morgan("dev"));
 app.use((req, _res, next) => {
   req.requestTime = new Date().toISOString();
   next();
