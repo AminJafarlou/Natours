@@ -2,7 +2,7 @@ const fs = require("fs");
 const express = require("express");
 
 const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/dev-data/data/tours.json`)
+  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
 const app = express();
@@ -14,6 +14,26 @@ app.get("/api/v1/tours", (req, res) => {
     result: tours.length,
     data: {
       tours,
+    },
+  });
+});
+
+app.get("/api/v1/tours/:id", (req, res) => {
+  const id = req.params.id * 1;
+
+  if (id > tours.length) {
+    return res.status(404).json({
+      result: "fail",
+      message: "Invalid ID",
+    });
+  }
+
+  const tour = tours.find((item) => item.id === id);
+  console.log({ tours });
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour,
     },
   });
 });
