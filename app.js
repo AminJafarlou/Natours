@@ -1,22 +1,43 @@
-const express = require('express');
+const fs = require("fs");
+const express = require("express");
+
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/dev-data/data/tours.json`)
+);
 
 const app = express();
+app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get("/api/v1/tours", (req, res) => {
   res.status(200).json({
-    message: 'Hello from server',
-    app: 'Natours',
+    status: "success",
+    result: tours.length,
+    data: {
+      tours,
+    },
   });
 });
 
-app.post('/', (req, res) => {
-  res.json({
-    message: 'This is POST result',
-    app: 'Natours',
-  });
+app.post("/api/v1/tours", (req, res) => {
+  const newTour = { ...req.body, id: tours.length + 1 };
+  console.log({ body: req.body });
+  const newTours = [...tours, newTour];
+
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours.json`,
+    JSON.stringify(newTours),
+    (err) => {
+      res.status(201).json({
+        status: "success",
+        data: {
+          tour: newTour,
+        },
+      });
+    }
+  );
 });
 
 const port = 3000;
 app.listen(port, () => {
-  console.log('Listening to server ...');
+  console.log("Listening to server ...");
 });
